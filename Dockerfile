@@ -3,20 +3,14 @@ FROM --platform=linux/amd64 node:22-slim
 
 WORKDIR /usr/src/app
 
-ADD . .
-
+COPY package*.json ./
 RUN npm ci
 
+COPY . .
 RUN npm run build
 
-CMD ["node", "dist/main.js"]
-
-FROM debian:stable-slim
-COPY goserver /bin/goserver
 ENV PORT=8991
-
-# Expose the port
 EXPOSE 8991
-CMD ["/bin/goserver"]
+CMD ["node", "dist/main.js"]
 
 
